@@ -1,22 +1,23 @@
 package com.project.ProjectFlightsSpring.model;
 
-import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Entity
+@Document
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
 
 
-    @ManyToOne
+
     private Flight flight;
 
 
-    @ManyToOne
+
     private Customer customer;
 
 

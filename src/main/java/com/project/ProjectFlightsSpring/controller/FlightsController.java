@@ -1,7 +1,9 @@
 package com.project.ProjectFlightsSpring.controller;
 
+import com.project.ProjectFlightsSpring.data.AirlineCompanyRepository;
 import com.project.ProjectFlightsSpring.data.CountryRepository;
 import com.project.ProjectFlightsSpring.data.FlightsRepository;
+import com.project.ProjectFlightsSpring.model.AirlineCompany;
 import com.project.ProjectFlightsSpring.model.Country;
 import com.project.ProjectFlightsSpring.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class FlightsController {
     @Autowired
     CountryRepository countryRepository;
 
+    @Autowired
+    AirlineCompanyRepository airlineCompanyRepository;
+
     @GetMapping(value = "/" )
     public String flightsPage(Model model) {
 //        model.addAttribute("flights", flightsRepository.findAll());
@@ -29,7 +34,7 @@ public class FlightsController {
 
    @GetMapping(value = "/deleteFlight/{id}")
    public String deleteFlight(@PathVariable("id") String param) {
-        flightsRepository.deleteById(Long.valueOf(param));
+        flightsRepository.deleteById(param);
         return "redirect:/api/flight/";
    }
 
@@ -41,16 +46,17 @@ public class FlightsController {
 
     @PostMapping(value ="/editFlight/{id}")
     public String editFlight(@PathVariable("id") String param, Model model) {
-        List<Flight> flightList = (List<Flight>) model.getAttribute("flights");
-        Flight flight = flightList.stream().filter((f) -> f.getId().equals(Long.valueOf(param))).findFirst().get();
-        model.addAttribute("flight", flight);
+        Flight fl = flightsRepository.findById(param).get();
+        model.addAttribute("flight", fl);
         return "editFlight";
     }
 
 
     @PostMapping(value = "/finishUpdate/{id}")
     public String finishUpdateFlight(@PathVariable(name = "id", required = false)  String param, @ModelAttribute Flight flight) {
-        flight.getId();
+        if (flight.getId().equals("")) {
+            flight.setId(null);
+        }
         flightsRepository.save(flight);
 
         return "redirect:/api/flight/";
@@ -59,19 +65,9 @@ public class FlightsController {
     @PostMapping(value = "/finishUpdate/")
     public String finishAddFlight(@PathVariable(name = "id", required = false)  String param, @ModelAttribute Flight flight) {
 
-        // Check if the country already exists
-        Country existingCountry = countryRepository.findByNameIgnoreCase(flight.getOriginCountry().getName());
-
-        if (existingCountry != null) {
-            // Country exists, use the existing country as a reference
-            flight.setOriginCountry(existingCountry);
-        } else {
-            // Country doesn't exist, create a new one
-            Country newCountry = new Country(flight.getOriginCountry().getName());
-            countryRepository.save(newCountry);
-            flight.setOriginCountry(newCountry);
+        if (flight.getId().equals("")) {
+            flight.setId(null);
         }
-
         flightsRepository.save(flight);
 
         return "redirect:/api/flight/";
@@ -82,4 +78,17 @@ public class FlightsController {
         return  flightsRepository.findAll();
     }
 
+    public Country saveOrUpdateCountry(Country country, Flight flight) {
+        Country newCountry = country;
+        if (country != null) {
+            // Country exists, use the existing country as a reference
+            flight.setOriginCountry(country);
+        } else {
+            // Country doesn't exist, create a new one
+            newCountry = new Country(flight.getOriginCountry().getName());
+            countryRepository.save(newCountry);
+            flight.setOriginCountry(newCountry);
+        }
+        return country;
+    }
 }

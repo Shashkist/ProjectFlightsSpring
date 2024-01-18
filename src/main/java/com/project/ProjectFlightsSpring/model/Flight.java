@@ -1,35 +1,37 @@
 package com.project.ProjectFlightsSpring.model;
 
-import jakarta.persistence.*;
+
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 @Data
-@Entity
+@Document
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate departureTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate landingTime;
 
     int remainingTickets;
 
     String flightNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private Country originCountry;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+
     private Country destinationCountry;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+
     private AirlineCompany airlineCompany;
 
 }

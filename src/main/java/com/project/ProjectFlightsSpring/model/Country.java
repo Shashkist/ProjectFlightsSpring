@@ -1,28 +1,19 @@
 package com.project.ProjectFlightsSpring.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Entity
 @AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "countries")
 public class Country {
 
-    public Country() {
-
-    }
-
-
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-
-
+    private String id;
 
     private String name;
 
@@ -30,4 +21,6 @@ public class Country {
     public Country(String name) {
         this.name = name;
     }
+
+
 }

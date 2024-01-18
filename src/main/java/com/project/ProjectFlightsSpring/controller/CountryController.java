@@ -29,7 +29,7 @@ public class CountryController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Country helloWorld(@PathVariable("id") String param) throws JsonProcessingException {
-        Optional<Country> country = repo.findById(Long.valueOf(param));
+        Optional<Country> country = repo.findById(param);
         System.out.println(country.getClass().getName());
         /*HashMap map = new HashMap<>();
         map.put("id", country.getId());

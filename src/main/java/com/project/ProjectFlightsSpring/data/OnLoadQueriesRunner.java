@@ -11,13 +11,13 @@ public class OnLoadQueriesRunner {
     @Bean
     public CommandLineRunner dataLoader(CountryRepository repo) {
         return args -> {
-            repo.save(new Country(1l,"India"));
-            repo.save(new Country(2L,"Armenia"));
-            repo.save(new Country(3l,"Israel"));
-            repo.save(new Country(4l, "Camerun"));
-            repo.save(new Country(5l,"USA"));
-            repo.save(new Country(6l,"United Kigndom"));
-            repo.save(new Country(7l,"Albania"));
+            repo.save(new Country("1","India"));
+            repo.save(new Country("2","Armenia"));
+            repo.save(new Country("3","Israel"));
+            repo.save(new Country("4", "Camerun"));
+            repo.save(new Country("5","USA"));
+            repo.save(new Country("6","United Kigndom"));
+            repo.save(new Country("7","Albania"));
 
         };
     }
