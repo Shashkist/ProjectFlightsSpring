@@ -1,6 +1,8 @@
 package com.project.ProjectFlightsSpring.controller;
 
+import com.project.ProjectFlightsSpring.data.CountryRepository;
 import com.project.ProjectFlightsSpring.data.FlightsRepository;
+import com.project.ProjectFlightsSpring.model.Country;
 import com.project.ProjectFlightsSpring.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,8 @@ public class FlightsController {
 
     @Autowired
     FlightsRepository flightsRepository;
+    @Autowired
+    CountryRepository countryRepository;
 
     @GetMapping(value = "/" )
     public String flightsPage(Model model) {
@@ -54,7 +58,20 @@ public class FlightsController {
 
     @PostMapping(value = "/finishUpdate/")
     public String finishAddFlight(@PathVariable(name = "id", required = false)  String param, @ModelAttribute Flight flight) {
-        flight.getId();
+
+        // Check if the country already exists
+        Country existingCountry = countryRepository.findByNameIgnoreCase(flight.getOriginCountry().getName());
+
+        if (existingCountry != null) {
+            // Country exists, use the existing country as a reference
+            flight.setOriginCountry(existingCountry);
+        } else {
+            // Country doesn't exist, create a new one
+            Country newCountry = new Country(flight.getOriginCountry().getName());
+            countryRepository.save(newCountry);
+            flight.setOriginCountry(newCountry);
+        }
+
         flightsRepository.save(flight);
 
         return "redirect:/api/flight/";
