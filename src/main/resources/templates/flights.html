@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Flights</title>
+</head>
+<body>
+
+
+    <h2>List of the flights</h2>
+
+    <form th:action="@{/api/flight/addFlight/}" th:method="get" th:object =${flight} >
+        <button type="submit">Add Flight</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Departure Time</th>
+                <th>Remaining Tickets</th>
+                <th>Origin Country</th>
+                <th>Destination Country</th>
+                <th>Airline Company</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            <tr th:each="flight: ${flights}">
+                <td th:text="${flight.departureTime}" />
+                <td th:text="${flight.remainingTickets}" />
+                <td th:text="${flight.originCountry.name}" />
+                <td th:text="${flight.destinationCountry.name}" />
+                <td th:text="${flight.airlineCompany.name}" />
+                <td>
+                    <div>
+                        <form th:action="@{/api/flight/editFlight/{flightId}(flightId=${flight.id})}" th:method="post" th:object =${flight} >
+                            <button type="submit">Edit</button>
+
+                        </form>
+                        <form th:action="@{/api/flight/deleteFlight/{flightId}(flightId=${flight.id})}" method="get">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

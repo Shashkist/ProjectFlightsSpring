@@ -2,6 +2,7 @@ package com.project.ProjectFlightsSpring.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -13,19 +14,22 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate departureTime;
 
     LocalDate landingTime;
 
     int remainingTickets;
 
-    @ManyToOne
+    String flightNumber;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Country originCountry;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Country destinationCountry;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private AirlineCompany airlineCompany;
 
 }

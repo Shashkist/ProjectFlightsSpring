@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>EditFlight</title>
+</head>
+<body>
+
+
+    <form th:action="@{/api/flight/finishUpdate/{flightId}(flightId=${flight.id})}" th:method="post" th:object="${flight}">
+        <input type="hidden" th:field="*{id}" />
+
+        <label for="departureTime">Departure Time:</label>
+        <input type="date" id="departureTime" th:field="*{departureTime}" th:format="'yyyy-MM-dd'" />
+
+        <label for="landingTime">Landing Time:</label>
+        <input type="date" id="landingTime" th:field="*{landingTime}" />
+
+        <label for="originCountry">Origin Country:</label>
+        <input type="text" id="originCountry" th:field="*{originCountry.name}" />
+
+        <label for="remainingTickets">Remaining Tickets:</label>
+        <input type="text" id="remainingTickets" th:field="*{remainingTickets}" />
+
+        <label for="destinationCountry">Destination Country:</label>
+        <input type="text" id="destinationCountry" th:field="*{destinationCountry.name}" />
+
+        <label for="airlineCompany">Airline Company:</label>
+        <input type="text" id="airlineCompany" th:field="*{airlineCompany.name}" />
+
+        <button type="submit">Edit</button>
+    </form>
+</body>
+</html>
