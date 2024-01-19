@@ -1,5 +1,6 @@
 package com.project.ProjectFlightsSpring.controller;
 
+import com.project.ProjectFlightsSpring.View.SearchFlightPVO;
 import com.project.ProjectFlightsSpring.data.FlightsRepository;
 import com.project.ProjectFlightsSpring.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller()
 @RequestMapping("/api/flight")
+@ControllerAdvice
 public class FlightsController {
 
     @Autowired
@@ -33,6 +36,22 @@ public class FlightsController {
     public String addFlight(@ModelAttribute Flight flight) {
         return "editFlight";
     }
+
+    @GetMapping(value = "/searchFlight/")
+    public String searchFlight(@ModelAttribute SearchFlightPVO searchFlightPVO, Model model) {
+
+        return "searchFlight";
+    }
+
+    @PostMapping(value = "/filterFlights/")
+
+    public String presentFilteredFlights(Model model, SearchFlightPVO searchFlightPVO) {
+
+        model.addAttribute("filteredFlights", filterFlights(searchFlightPVO, model));
+
+        return "searchFlight";
+    }
+
 
 
     @PostMapping(value ="/editFlight/{id}")
@@ -60,9 +79,38 @@ public class FlightsController {
         return "redirect:/api/flight/";
     }
 
+
+    private List<Flight> filterFlights(SearchFlightPVO searchFlightPVO, Model model) {
+        List<Flight> flights = (List<Flight>) model.getAttribute("flights");
+        List<Flight> filteredFlights = new ArrayList<>();
+        if (flights != null && searchFlightPVO != null) {
+            filteredFlights = flights.stream().
+                    //filter for number of tickets
+                    filter(flight -> {
+                        // Perform null checks for properties of the Flight object and the SearchFlightPVO object
+                        return  searchFlightPVO.getNumberOfTickets() != null &&
+                                flight != null &&
+                                searchFlightPVO.getNumberOfTickets() < flight.getRemainingTickets();
+                    }).
+                    //filter for origin name
+                    filter(flight -> {
+                        // Perform null checks for properties of the Flight object and the SearchFlightPVO object
+                        return  (searchFlightPVO.getFrom() == null || "".equals(searchFlightPVO.getFrom())) ||
+                                (flight.getOriginCountry() != null &&
+                                searchFlightPVO.getFrom().equals(flight.getOriginCountry().getName()));
+                    }).
+                    collect(Collectors.toList());
+            //TODO add more filters
+        }
+        return filteredFlights;
+    }
+
     @ModelAttribute("flights")
     public Iterable<Flight> populateflights() {
         return  flightsRepository.findAll();
     }
+
+
+
 
 }

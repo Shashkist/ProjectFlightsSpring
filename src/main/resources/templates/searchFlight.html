@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>Search flight</h1>
+
+    <form th:action="@{/api/flight/filterFlights/}" th:method="post" th:object =${searchFlightPVO}>
+       
+        
+
+        <label for="from">From</label>
+        <input type="text" id="from" th:field="*{from}" />
+
+        <button type="submit">&#8633;</button>
+
+        <label for="to">To:</label>
+        <input type="text" id="to" th:field="*{to}" />
+
+        
+
+        <br/>
+           
+        <label for="departureTime">Departure:</label>
+        <input type="datetime-local" id="departureTime" th:field="*{departureTime}" />
+
+        <label for="landingTime">Return:</label>
+        <input type="datetime-local" id="landingTime" th:field="*{landingTime}" />
+
+        <br/>
+      
+        <label for="numberOfTickets">Adults:</label>
+        <input type="text" id="numberOfTickets" th:field="*{numberOfTickets}" />
+
+        <button type="submit">Search</button>
+
+        <br/>
+        <h1>Search Results</h1>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Departure Time</th>
+                <th>Remaining Tickets</th>
+                <th>Origin Country</th>
+                <th>Destination Country</th>
+                <th>Airline Company</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+            <tr th:each="flight: ${filteredFlights}">
+                <td th:text="${flight.departureTime}" />
+                <td th:text="${flight.remainingTickets}" />
+                <td th:text="${flight.originCountry.name}" />
+                <td th:text="${flight.destinationCountry.name}" />
+                <td th:text="${flight.airlineCompany.name}" />
+                <td>
+                    <div>
+                        <form th:method="post" th:object =${flight} >
+                            <button type="submit">Order this flight</button>
+
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        
+    </form>
+
+
+
+</body>
+</html>
