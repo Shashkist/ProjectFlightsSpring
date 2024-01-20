@@ -7,17 +7,18 @@
 </head>
 
 
-        <body>
-            <div th:fragment="menu">
-                <p>Please select an option</p>
-                <ol>
-                    <li><a href="../flights.html" th:href="@{/api/flight/}">Flights</a></li>
-                    <li><a href="../searchFlight.html" th:href="@{/api/flight/searchFlight/}">Search Flight</a></li>
+<body>
 
-                    <li><a href="subscribe.html" th:href="@{/subscribe}">Subscribe to our Newsletter</a></li>
-                    <li><a href="userprofile.html" th:href="@{/userprofile}">See User Profile</a></li>
-                </ol>
-            </div>
-        </body>
+    <div th:fragment="menu">
+        <p>Please select an option</p>
+        <ol>
+            <li><a href="../flights.html" th:href="@{/api/flight/}">Flights</a></li>
+            <li><a href="../searchFlight.html" th:href="@{/api/flight/searchFlight/}">Search Flight</a></li>
+
+            <li><a href="subscribe.html" th:href="@{/subscribe}">Subscribe to our Newsletter</a></li>
+            <li><a href="userprofile.html" th:href="@{/userprofile}">See User Profile</a></li>
+        </ol>
+    </div>
+</body>
 
 </html>

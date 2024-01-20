@@ -1,56 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout :: layout(~{::title}, ~{::section})}">
 <head>
     <meta charset="UTF-8">
     <title>Flights</title>
 </head>
 <body>
-    <header th:insert="~{partials/globalUserPanel :: userData}">
+    <section>
+        <header th:insert="~{partials/globalUserPanel :: userData}">
 
-    </header>
+        </header>
 
-    <div th:insert="~{partials/mainMenu :: menu}"></div>
+        <div th:insert="~{partials/mainMenu :: menu}"></div>
 
-    <h2>List of the flights</h2>
+        <h2>List of the flights</h2>
 
-    <form th:action="@{/api/flight/addFlight/}" th:method="get" th:object =${flight} >
-        <button type="submit">Add Flight</button>
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Departure Time</th>
-                <th>Remaining Tickets</th>
-                <th>Origin Country</th>
-                <th>Destination Country</th>
-                <th>Airline Company</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <form th:action="@{/api/flight/addFlight/}" th:method="get" th:object =${flight} >
+            <button type="submit">Add Flight</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Departure Time</th>
+                    <th>Remaining Tickets</th>
+                    <th>Origin Country</th>
+                    <th>Destination Country</th>
+                    <th>Airline Company</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
 
-        <tbody>
-            <tr th:each="flight: ${flights}">
-                <td th:text="${flight.departureTime}" />
-                <td th:text="${flight.remainingTickets}" />
-                <td th:text="${flight.originCountry.name}" />
-                <td th:text="${flight.destinationCountry.name}" />
-                <td th:text="${flight.airlineCompany.name}" />
-                <td>
-                    <div>
-                        <form th:action="@{/api/flight/editFlight/{flightId}(flightId=${flight.id})}" th:method="post" th:object =${flight} >
-                            <button type="submit">Edit</button>
+            <tbody>
+                <tr th:each="flight: ${flights}">
+                    <td th:text="${flight.departureTime}" />
+                    <td th:text="${flight.remainingTickets}" />
+                    <td th:text="${flight.originCountry.name}" />
+                    <td th:text="${flight.destinationCountry.name}" />
+                    <td th:text="${flight.airlineCompany.name}" />
+                    <td>
+                        <div>
+                            <form th:action="@{/api/flight/editFlight/{flightId}(flightId=${flight.id})}" th:method="post" th:object =${flight} >
+                                <button type="submit">Edit</button>
 
-                        </form>
-                        <form th:action="@{/api/flight/deleteFlight/{flightId}(flightId=${flight.id})}" method="get">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                            </form>
+                            <form th:action="@{/api/flight/deleteFlight/{flightId}(flightId=${flight.id})}" method="get">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-    <div th:insert="~{partials/footer :: copy}"></div>
+
+
 </body>
 </html>
