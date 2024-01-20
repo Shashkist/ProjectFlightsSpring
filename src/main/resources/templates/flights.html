@@ -5,7 +5,11 @@
     <title>Flights</title>
 </head>
 <body>
-    <div th:insert="~{mainMenu :: menu}"></div>
+    <header th:insert="~{partials/globalUserPanel :: userData}">
+
+    </header>
+
+    <div th:insert="~{partials/mainMenu :: menu}"></div>
 
     <h2>List of the flights</h2>
 
@@ -47,6 +51,6 @@
         </tbody>
     </table>
 
-    <div th:insert="~{footer :: copy}"></div>
+    <div th:insert="~{partials/footer :: copy}"></div>
 </body>
 </html>

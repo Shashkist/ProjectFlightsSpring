@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="userData">
+        <h1 th:if="${registeredUser != null}" th:text="'Welcome ' + ${registeredUser?.userName ?: ''}"></h1>
+
+        <!-- Show a login button if userName is null or empty -->
+        <div th:if="${registeredUser == null or registeredUser.userName == null or registeredUser.userName == ''}">
+            <a th:href="@{/login}">Login</a>
+        </div>
+    </div>
+
+</body>
+</html>

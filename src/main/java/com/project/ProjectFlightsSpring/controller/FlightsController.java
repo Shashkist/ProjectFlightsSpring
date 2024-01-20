@@ -3,6 +3,7 @@ package com.project.ProjectFlightsSpring.controller;
 import com.project.ProjectFlightsSpring.View.SearchFlightPVO;
 import com.project.ProjectFlightsSpring.data.FlightsRepository;
 import com.project.ProjectFlightsSpring.model.Flight;
+import com.project.ProjectFlightsSpring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,17 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller()
+@Controller
 @RequestMapping("/api/flight")
-@ControllerAdvice
 public class FlightsController {
 
     @Autowired
     FlightsRepository flightsRepository;
 
     @GetMapping(value = "/" )
-    public String flightsPage(Model model) {
-//        model.addAttribute("flights", flightsRepository.findAll());
+    public String flightsPage(Model model,@ModelAttribute("registeredUser") User registeredUser) {
+        model.addAttribute("registeredUser", registeredUser);
         return "flights";
     }
 
